@@ -1,8 +1,8 @@
 from typing import Optional
 
+import numpy as np
 import torch
 from torch import Tensor, nn
-import numpy as np
 
 
 class MLP(nn.Module):
@@ -108,7 +108,6 @@ class TransformerVecField(nn.Module):
         else:
             self.pe = PositionalEncoding(input_dim)
 
-    
         self.transformer_encoder = nn.TransformerEncoder(
             nn.TransformerEncoderLayer(
                 d_model=input_dim + time_embedding_size,
@@ -131,8 +130,9 @@ class TransformerVecField(nn.Module):
         emb = t.unsqueeze(1) * emb
         return torch.cat([torch.sin(emb), torch.cos(emb)], dim=-1)
 
-    def forward(self, t: Tensor, x: Tensor, conditional_static: Tensor, seq_sizes: Tensor) -> Tensor:
-
+    def forward(
+        self, t: Tensor, x: Tensor, conditional_static: Tensor, seq_sizes: Tensor
+    ) -> Tensor:
         # x: (batch_size, num_time_steps, input_dim)
         # t: (batch_size)
         # conditional_static: (batch_size, conditional_static_dim)
@@ -169,11 +169,15 @@ class TransformerVecField(nn.Module):
 
         batch_size = x.size(0)
         # Create position indices for each sequence
-        pos_indices = torch.arange(max_seq_len).to(x.device).unsqueeze(0).expand(batch_size, -1)
+        pos_indices = (
+            torch.arange(max_seq_len).to(x.device).unsqueeze(0).expand(batch_size, -1)
+        )
 
         key_padding_mask = pos_indices >= seq_sizes.unsqueeze(1)
         key_padding_mask = key_padding_mask.float()
-        key_padding_mask = key_padding_mask.masked_fill(key_padding_mask == 1.0, float('-inf'))
+        key_padding_mask = key_padding_mask.masked_fill(
+            key_padding_mask == 1.0, float("-inf")
+        )
 
         x = self.transformer_encoder(
             x,

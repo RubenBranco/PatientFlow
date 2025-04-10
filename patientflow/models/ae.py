@@ -5,9 +5,10 @@ import torch.nn.functional as F
 from lightning.pytorch import (
     LightningModule,
 )
-from patientflow.data import CategoricalFeature, ContinuousFeature, Feature, FeatureList
 from torch import Tensor, nn
 from torch.optim import Optimizer
+
+from patientflow.data import CategoricalFeature, ContinuousFeature, Feature, FeatureList
 
 
 class FeatureEmbedder(nn.Module):

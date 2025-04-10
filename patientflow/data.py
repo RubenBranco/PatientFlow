@@ -1,7 +1,7 @@
+from enum import Enum
 from multiprocessing import cpu_count
 from pathlib import Path
-from typing import List, Optional, Tuple, Union, Literal, Any, Iterator
-from enum import Enum
+from typing import Any, Iterator, List, Literal, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -207,7 +207,7 @@ class FeatureList:
                 )
             )
         )
-    
+
     def continuous_features(self) -> "FeatureList":
         """
         Returns a new FeatureList containing only the continuous features in the dataset.
@@ -445,10 +445,12 @@ class BrainteaserDataModule(LightningDataModule):
             if has_median_date and requires_median_delta_calc:
                 # Store the original dates to avoid losing information during calculation
                 original_dates = patient_df["medianDate"].copy()
-                
+
                 # Calculate days between consecutive visits
                 for i in range(1, len(patient_df)):
-                    patient_df.loc[i, "medianDate"] = (original_dates[i] - original_dates[i-1]).days                
+                    patient_df.loc[i, "medianDate"] = (
+                        original_dates[i] - original_dates[i - 1]
+                    ).days
                 patient_df.loc[0, "medianDate"] = 0
 
             if (patient_df[[f"P{j}" for j in range(1, 13)]] == 0.0).all().all():
@@ -631,7 +633,7 @@ class BrainteaserDataModule(LightningDataModule):
                 dfs.append(pd.DataFrame(patient))
 
         return pd.concat(dfs, ignore_index=True)
-    
+
     def df_to_endpoint_tensor_dataset(
         self, df: pd.DataFrame, k: int, endpoint: int, scale_time_delta: bool = True
     ):
@@ -667,7 +669,9 @@ class BrainteaserDataModule(LightningDataModule):
                 # assuming df is not in original scale
                 if (patient_df["P5"] == -1).all() and (patient_df["P6"] == -1).all():
                     continue
-                p_endpoint = patient_df["P5"].between(1, 2) | patient_df["P6"].between(1, 2)
+                p_endpoint = patient_df["P5"].between(1, 2) | patient_df["P6"].between(
+                    1, 2
+                )
             elif endpoint == 5:
                 # C5 need for a wheelchair P8 <= 1 which means should be between 1 and 2
                 # assuming df is not in original scale
@@ -676,13 +680,24 @@ class BrainteaserDataModule(LightningDataModule):
                 p_endpoint = patient_df["P8"].between(1, 2)
 
             endpoint_window = p_endpoint.idxmax() if p_endpoint.any() else None
-            
+
             if scale_time_delta:
-                patient_df["medianDate"] = self.features.temporal_features()[-1].scaler.inverse_transform(
+                patient_df["medianDate"] = self.features.temporal_features()[
+                    -1
+                ].scaler.inverse_transform(
                     patient_df["medianDate"].values.reshape(-1, 1)
                 )
-            endpoint_time = sum([patient_df.loc[i]["medianDate"] for i in range(0, endpoint_window + 1)]) if p_endpoint.any() else None
-            
+            endpoint_time = (
+                sum(
+                    [
+                        patient_df.loc[i]["medianDate"]
+                        for i in range(0, endpoint_window + 1)
+                    ]
+                )
+                if p_endpoint.any()
+                else None
+            )
+
             for i, window_df in enumerate(patient_df.expanding(1)):
                 if endpoint_window is not None and i >= endpoint_window:
                     break
@@ -693,7 +708,16 @@ class BrainteaserDataModule(LightningDataModule):
                     ].values
                 )
                 label = (
-                    int(sum([window_df.iloc[j]["medianDate"] for j in range(0, len(window_df))]) + k >= endpoint_time)
+                    int(
+                        sum(
+                            [
+                                window_df.iloc[j]["medianDate"]
+                                for j in range(0, len(window_df))
+                            ]
+                        )
+                        + k
+                        >= endpoint_time
+                    )
                     if endpoint_time is not None
                     else 0
                 )
@@ -707,9 +731,11 @@ class BrainteaserDataModule(LightningDataModule):
                 )
 
                 if scale_time_delta:
-                    temporal_features_tensor[:, -1] = torch.from_numpy(self.features.temporal_features()[-1].scaler.inverse_transform(
-                        temporal_features_tensor[:, -1].flatten().unsqueeze(1)
-                    )).flatten()
+                    temporal_features_tensor[:, -1] = torch.from_numpy(
+                        self.features.temporal_features()[-1].scaler.inverse_transform(
+                            temporal_features_tensor[:, -1].flatten().unsqueeze(1)
+                        )
+                    ).flatten()
 
                 static_tensors.append(static_features_tensor)
                 temporal_tensors.append(temporal_features_tensor)
