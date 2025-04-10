@@ -1,0 +1,8 @@
+.vscode/
+.DS_Store
+*.pyc
+__pycache__/
+*.pt
+lightning_logs/
+*.egg-info/
+*.pkl
