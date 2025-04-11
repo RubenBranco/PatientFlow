@@ -70,7 +70,7 @@ Creating a custom DataModule that produces these tensor formats allows PatientFl
 
 To implement a custom DataModule:
 
-1. Extend the `LightningDataModule` class as shown in `BrainteaserDataModule`
+1. Extend the `LightningDataModule` class as shown in `BrainteaserDataModule`. Ensure it has the necessary properties for the autoencoder to work with (e.g. `.features` property of type `FeatureList`)
 2. Implement the required methods for data loading, processing, batching, and other necessary operations
 3. Ensure your data is formatted into the expected static and temporal tensors
 
