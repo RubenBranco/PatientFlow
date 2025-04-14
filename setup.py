@@ -43,7 +43,7 @@ setup(
             "msas-pytorch",
             "matplotlib==3.9.0",
             "tslearn==0.6.3",
-            "numba==0.59.1"
+            "numba==0.59.1",
             "ipykernel",
         ],
     },
