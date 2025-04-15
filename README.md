@@ -5,15 +5,15 @@
 </p>
 
 <p align="center">
-  <strong>Author Name¹², Author Name², Author Name³</strong>
+  <strong>Ruben Branco¹, Marta Gromicho², Mamede de Carvalho², Piero Fariselli³, Sara C. Madeira²</strong>
 </p>
 <p align="center">
-  <sup>1</sup>Department of Computer Science, University Name<br>
-  <sup>2</sup>Medical Research Institute, University Name<br>
-  <sup>3</sup>Department of Medical Informatics, University Name
+  <sup>1</sup>LASIGE, Faculdade de Ciências, Universidade de Lisboa, Campo Grande, Lisboa, 1749-016, Portugal<br>
+  <sup>2</sup>Faculdade de Medicina, Universidade de Lisboa, Av. Prof. Egas Moniz, Lisboa, 1649-028, Portugal<br>
+  <sup>3</sup>Department of Medical Sciences, University of Torino, Corso Dogliotti 14, Turin, 10126, Italy
 </p>
 <p align="center">
-  <a href="mailto:corresponding.author@email.com">corresponding.author@email.com</a>
+  📧 rmbranco [at] fc.ul.pt
 </p>
 
 ---
