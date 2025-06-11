@@ -1,4 +1,4 @@
-# PatientFlow: A Generative Framework for Longitudinal Patient Data
+# PatientFlow: Learning to Generate Mixed-Type Longitudinal Clinical Data with Flow Matching
 
 <p align="center">
   <img src="docs/assets/PatientFlow.png" alt="PatientFlow Architecture" width="700"/>
@@ -18,9 +18,15 @@
 
 ---
 
-Abstract: <em>abstract here</em>
+## Abstract
 
-*<abstract here>*
+Synthetic longitudinal clinical data can help unlock large-scale deep learning models to tackle complex diseases. However, learning to generate realistic samples faces dual challenges: modeling the inherently complex structure of longitudinal mixed-type data and protecting patient privacy.
+
+We introduce **PatientFlow**, a generative modeling method combining Variational Autoencoders for data representation with Flow Matching for sample generation. We extensively evaluated the model on a longitudinal cohort of patients with Amyotrophic Lateral Sclerosis (*N* = 1,560) using both qualitative and quantitative methods.
+
+The model demonstrated an ability to generate realistic samples, which was further validated by expert clinicians. Prognosis models trained on our synthetic data across five clinically relevant endpoints matched and sometimes exceeded the performance of models trained on real data.
+
+Our results demonstrate that PatientFlow can effectively model longitudinal clinical data with high fidelity, opening promising avenues for sharing and augmenting datasets for deep learning applications in healthcare.
 
 ## Overview
 
@@ -48,7 +54,14 @@ To run the notebooks and experiments, additional dependencies are required:
 pip install -e ".[experiments]"
 ```
 
+### Additional Dependencies
+
 Our extension of the Multi-Sequence Aggregate Similarity, used for quantitative analysis, can be found and installed [here](https://github.com/RubenBranco/msas-pytorch).
+
+```bash
+# Install eMSAS for advanced similarity metrics
+pip install git+https://github.com/RubenBranco/msas-pytorch.git
+```
 
 ## Data Format and Custom DataModules
 
@@ -129,16 +142,31 @@ PatientFlow/
 1. **distribution_plots.ipynb**
    - Visualization of original vs. synthetic data distributions
    - Feature-level comparisons and distribution plots
+
 2. **metrics.ipynb**
-   - Quantitative evaluation of synthetic data quality with [eMSAS](https://github.com/RubenBranco/msas-pytorch) and Prognostic Metrics.
+   - Quantitative evaluation of synthetic data quality with [eMSAS](https://github.com/RubenBranco/msas-pytorch) and Prognostic Metrics
+   - Parallelized computation for efficient evaluation across multiple synthetic datasets
+
 3. **privacy.ipynb**
    - Privacy analysis of the generated synthetic data
+
 4. **semantic_analysis.ipynb**
    - Analysis of semantic preservation in the synthetic data
-   - Clinical plausibility assessment
+   - Clinical plausibility assessment using domain-specific rules
+
 5. **statistical_tests.ipynb**
    - Statistical comparison between original and synthetic datasets
-   - Hypothesis testing for distribution similarity
+   - Comprehensive hypothesis testing including KS tests, t-tests, chi-square tests, and Fisher's exact tests
+   - Automated LaTeX table generation for statistical results
+
+6. **clinical_analysis_sample.ipynb**
+   - Generation of balanced samples (real vs. synthetic patients) for clinical evaluation
+   - Excel workbook creation with structured evaluation forms for clinical experts
+
+7. **clinical_analysis.ipynb**
+   - Analysis of clinical expert evaluation results
+   - Confusion matrix generation and statistical analysis of expert discrimination ability
+   - Confidence level analysis and reasoning categorization
 
 ## Citation
 
