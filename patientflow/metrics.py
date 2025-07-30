@@ -191,27 +191,42 @@ class PrognosisMetric:
         eval_metric: Literal["auroc", "acc"] = "auroc",
         enable_progress_bar: bool = False,
         epochs: int = 1024,
+        data_loader_num_workers: Optional[int] = None,
+        data_loader_context: Optional[str] = None,
     ) -> float:
         logging.getLogger("pytorch_lightning").setLevel(logging.ERROR)
         logging.getLogger("lightning.fabric.utilities.seed").setLevel(logging.ERROR)
         logging.getLogger("lightning.pytorch.accelerators.cuda").setLevel(logging.ERROR)
+        logging.getLogger("lightning.pytorch.utilities.rank_zero").setLevel(
+            logging.ERROR
+        )
+        logging.getLogger("lightning.pytorch.accelerators.cuda").setLevel(logging.ERROR)
+
         seed_everything(seed)
 
         train_dl = DataLoader(
             train_ds,
             batch_size=batch_size,
             shuffle=True,
-            num_workers=cpu_count(),
+            num_workers=cpu_count()
+            if data_loader_num_workers is None
+            else data_loader_num_workers,
             persistent_workers=True,
-            multiprocessing_context="spawn",
+            multiprocessing_context="spawn"
+            if data_loader_context is None
+            else data_loader_context,
         )
         test_dl = DataLoader(
             test_ds,
             batch_size=batch_size,
             shuffle=False,
-            num_workers=cpu_count(),
+            num_workers=cpu_count()
+            if data_loader_num_workers is None
+            else data_loader_num_workers,
             persistent_workers=True,
-            multiprocessing_context="spawn",
+            multiprocessing_context="spawn"
+            if data_loader_context is None
+            else data_loader_context,
         )
 
         model = PrognosticNetwork(
@@ -236,4 +251,9 @@ class PrognosisMetric:
         logging.getLogger("pytorch_lightning").setLevel(logging.INFO)
         logging.getLogger("lightning.fabric.utilities.seed").setLevel(logging.INFO)
         logging.getLogger("lightning.pytorch.accelerators.cuda").setLevel(logging.INFO)
+        logging.getLogger("lightning.pytorch.utilities.rank_zero").setLevel(
+            logging.INFO
+        )
+        logging.getLogger("lightning.pytorch.accelerators.cuda").setLevel(logging.INFO)
+
         return test_metric
