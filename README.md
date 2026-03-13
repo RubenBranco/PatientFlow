@@ -170,12 +170,18 @@ PatientFlow/
 
 ## Citation
 
-Citation coming soon.
-
-<!-- ## License
-
-[Add your license information here]
-
-## Acknowledgments
-
-[Add your acknowledgments here] -->
+```bibtex
+@article{BRANCO2026103392,
+  title    = {PatientFlow: Learning to generate mixed-type longitudinal clinical data with flow matching},
+  journal  = {Artificial Intelligence in Medicine},
+  volume   = {176},
+  pages    = {103392},
+  year     = {2026},
+  issn     = {0933-3657},
+  doi      = {https://doi.org/10.1016/j.artmed.2026.103392},
+  url      = {https://www.sciencedirect.com/science/article/pii/S0933365726000448},
+  author   = {Ruben Branco and Marta Gromicho and Mamede {de Carvalho} and Piero Fariselli and Sara {C. Madeira}},
+  keywords = {Deep learning, Generative modeling, Flow matching, Longitudinal clinical data, Prognosis},
+  abstract = {Synthetic longitudinal clinical data, with static and temporal mixed-type components, can help unlock large-scale deep learning models to tackle complex diseases. However, learning to generate realistic patients faces dual challenges: modeling the inherently complex structure of longitudinal data and protecting patient privacy. We introduce PatientFlow, a generative modeling method combining Variational Autoencoders for data representation with Flow Matching for patient generation. We extensively evaluated the generative model on a longitudinal cohort of patients with Amyotrophic Lateral Sclerosis (N = 1560) using both qualitative and quantitative methods. The ability of the method to generate realistic patient data, further validated by expert clinicians, shows its potential application to other diseases. Prognostic models trained on synthetic data across five clinically relevant endpoints matched and sometimes outperformed the models trained on real data. Our results demonstrate that PatientFlow can effectively model longitudinal clinical data with high fidelity, opening promising avenues for sharing and augmenting datasets for deep learning applications in healthcare without compromising privacy.}
+}}
+```
